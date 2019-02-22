@@ -1,0 +1,9 @@
+[package]
+name = "diff_assert"
+version = "0.1.0"
+authors = ["Wojciech Polak <wojciech.polak@anixe.pl>"]
+edition = "2018"
+
+[dependencies]
+diffs = "0.2.1"
+colored = "1.7"
