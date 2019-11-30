@@ -5,5 +5,5 @@ authors = ["Wojciech Polak <wojciech.polak@anixe.pl>"]
 edition = "2018"
 
 [dependencies]
-diffs = "0.2.1"
-colored = "1.7"
+diffs = "0.3.0"
+colored = "1.9"

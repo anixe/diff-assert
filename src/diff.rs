@@ -6,7 +6,7 @@ pub fn diff_hunks<'a>(text1: &'a [String], text2: &'a [String], context_radius: 
     let mut processor = Processor::new(&text1, &text2, context_radius);
     {
         let mut replace = diffs::Replace::new(&mut processor);
-        diffs::patience::diff(&mut replace, &text1, &text2)?;
+        diffs::patience::diff(&mut replace, text1, 0, text1.len() , text2, 0, text2.len())?;
     }
     Ok(processor.result())
 }
