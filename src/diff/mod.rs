@@ -1,12 +1,21 @@
-use std::fmt::{self, Formatter, Display};
-use std::{collections::VecDeque, io};
-use colored::*;
+mod hunk;
+mod line;
+mod processor;
 
-pub fn diff_hunks<'a>(text1: &'a [String], text2: &'a [String], context_radius: usize) -> io::Result<Vec<Hunk<'a>>> {
+pub use self::hunk::Hunk;
+pub use self::line::Line;
+pub use self::processor::Processor;
+use std::{collections::VecDeque, io};
+
+pub fn diff_hunks<'a>(
+    text1: &'a [String],
+    text2: &'a [String],
+    context_radius: usize,
+) -> io::Result<Vec<Hunk<'a>>> {
     let mut processor = Processor::new(&text1, &text2, context_radius);
     {
         let mut replace = diffs::Replace::new(&mut processor);
-        diffs::patience::diff(&mut replace, text1, 0, text1.len() , text2, 0, text2.len())?;
+        diffs::patience::diff(&mut replace, text1, 0, text1.len(), text2, 0, text2.len())?;
     }
     Ok(processor.result())
 }
@@ -19,131 +28,8 @@ pub fn diff(text1: &[String], text2: &[String], context_radius: usize) -> io::Re
     Ok(result)
 }
 
-struct Processor<'a> {
-    text1: &'a [String],
-    text2: &'a [String],
-
-    context_radius: usize,
-    inserted: usize,
-    removed: usize,
-
-    context: Context<'a>,
-    result: Vec<Hunk<'a>>,
-}
-
-pub struct Hunk<'a> {
-    old_start: usize,
-    new_start: usize,
-    inserted: usize,
-    removed: usize,
-    lines: Vec<Line<'a>>
-}
-
-impl<'a> Display for Hunk<'a> {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        let header = format!("... ...   @@ -{},{} +{},{} @@",
-            self.old_start,
-            self.removed,
-            self.new_start,
-            self.inserted
-        );
-        writeln!(f, "{}", header.on_blue())?;
-        for line in self.lines.iter() {
-            writeln!(f, "{}", line)?;
-        }
-        Ok(())
-    }
-}
-
 #[derive(Debug)]
-pub struct Line<'a> {
-    kind: LineKind,
-    inner: &'a str,
-    old_pos: usize,
-    new_pos: usize
-}
-
-#[derive(Debug)]
-pub enum LineKind {
-    Removed,
-    Inserted,
-    Unchanged
-}
-
-impl<'a> Line<'a> {
-    pub fn insert(pos: usize, inner: &'a str) -> Self {
-        Line {
-            kind: LineKind::Inserted,
-            inner, 
-            old_pos: pos, 
-            new_pos: pos
-        }
-    }
-
-    pub fn remove(pos: usize, inner: &'a str) -> Self {
-        Line {
-            kind: LineKind::Removed,
-            inner, 
-            old_pos: pos, 
-            new_pos: pos
-        }
-    }
-
-    pub fn line(old_pos: usize, new_pos: usize, inner: &'a str) -> Self {
-        Line {
-            kind: LineKind::Unchanged,
-            inner, old_pos, new_pos
-        }
-    }
-}
-
-impl<'a> Display for Line<'a> {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        let line = self.inner;
-        let i = self.old_pos + 1;
-        let j = self.new_pos + 1;
-        let sign = match &self.kind {
-            LineKind::Inserted => "+",
-            LineKind::Removed => "-",
-            LineKind::Unchanged => " "
-        };
-        let numbers = match &self.kind  {
-            LineKind::Inserted => format!("    {:03}", j),
-            LineKind::Removed => format!("{:03}    ", i),
-            LineKind::Unchanged => format!("{:03} {:03}", i, j)
-        };
-
-        let line = format!("{}  {}{}", numbers, sign, line);
-        match &self.kind {
-            LineKind::Inserted => write!(f, "{}", line.on_green().black()),
-            LineKind::Removed => write!(f, "{}", line.on_red().black()),
-            LineKind::Unchanged => write!(f, "{}", line)
-        }
-    }
-}
-
-impl<'a> Processor<'a> {
-    pub fn new(text1: &'a [String], text2: &'a [String], context_radius: usize) -> Self {
-        Self {
-            text1,
-            text2,
-
-            context_radius,
-            inserted: 0,
-            removed: 0,
-
-            context: Context::new(),
-            result: Vec::new(),
-        }
-    }
-
-    pub fn result(self) -> Vec<Hunk<'a>> {
-        self.result
-    }
-}
-
-#[derive(Debug)]
-struct Context<'a> {
+pub struct Context<'a> {
     pub start: Option<usize>,
     pub data: VecDeque<Line<'a>>,
     pub changed: bool,
@@ -186,11 +72,10 @@ impl<'a> Context<'a> {
                 removed: self.equaled + self.removed,
                 new_start: start + inserted - removed,
                 inserted: self.equaled + self.inserted,
-                lines: data.into_iter().collect()
+                lines: data.into_iter().collect(),
             });
         }
         hunk
-
     }
 }
 
@@ -206,12 +91,16 @@ impl<'a> diffs::Diff for Processor<'a> {
         for (i, j) in (old..old + len).zip(_new.._new + len) {
             if !self.context.changed {
                 if self.context.counter < self.context_radius {
-                    self.context.data.push_back(Line::line(i, j, &self.text1[i]));
+                    self.context
+                        .data
+                        .push_back(Line::line(i, j, &self.text1[i]));
                     self.context.equaled += 1;
                     self.context.counter += 1;
                 }
                 if self.context.counter >= self.context_radius {
-                    self.context.data.push_back(Line::line(i, j, &self.text1[i]));
+                    self.context
+                        .data
+                        .push_back(Line::line(i, j, &self.text1[i]));
                     self.context.data.pop_front();
                     if let Some(ref mut start) = self.context.start {
                         *start += 1;
@@ -221,7 +110,9 @@ impl<'a> diffs::Diff for Processor<'a> {
             }
             if self.context.changed {
                 if self.context.counter < self.context_radius * 2 {
-                    self.context.data.push_back(Line::line(i, j, &self.text1[i]));
+                    self.context
+                        .data
+                        .push_back(Line::line(i, j, &self.text1[i]));
                     self.context.equaled += 1;
                     self.context.counter += 1;
                 }
@@ -276,7 +167,13 @@ impl<'a> diffs::Diff for Processor<'a> {
         Ok(())
     }
 
-    fn replace(&mut self, old: usize, old_len: usize, new: usize, new_len: usize) -> Result<(), Self::Error> {
+    fn replace(
+        &mut self,
+        old: usize,
+        old_len: usize,
+        new: usize,
+        new_len: usize,
+    ) -> Result<(), Self::Error> {
         if self.context.start.is_none() {
             self.context.start = Some(old);
         }
