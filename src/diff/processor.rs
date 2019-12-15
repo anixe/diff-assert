@@ -1,6 +1,7 @@
 use crate::diff::Context;
 use crate::diff::Hunk;
 
+#[derive(Debug)]
 pub struct Processor<'a> {
     pub(crate) text1: &'a [String],
     pub(crate) text2: &'a [String],

@@ -11,3 +11,4 @@ itertools = "0.8.2"
 
 [dev-dependencies]
 test-case = "1.0.0-alpha-1"
+insta = "0.12.0"

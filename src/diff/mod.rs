@@ -34,7 +34,6 @@ pub struct Context<'a> {
     pub data: VecDeque<Line<'a>>,
     pub changed: bool,
 
-    pub counter: usize,
     pub equaled: usize,
     pub removed: usize,
     pub inserted: usize,
@@ -47,7 +46,6 @@ impl<'a> Context<'a> {
             data: VecDeque::new(),
             changed: false,
 
-            counter: 0,
             equaled: 0,
             removed: 0,
             inserted: 0,
@@ -83,55 +81,43 @@ impl<'a> diffs::Diff for Processor<'a> {
     type Error = io::Error;
 
     fn equal(&mut self, old: usize, _new: usize, len: usize) -> Result<(), Self::Error> {
+        let mut size = 0;
+
         if self.context.start.is_none() {
             self.context.start = Some(old);
         }
 
-        self.context.counter = 0;
         for (i, j) in (old..old + len).zip(_new.._new + len) {
             if !self.context.changed {
-                if self.context.counter < self.context_radius {
-                    self.context
-                        .data
-                        .push_back(Line::line(i, j, &self.text1[i]));
+                self.context.data.push_back(Line::line(i, j, &self.text1[i]));
+                if size < self.context_radius {
                     self.context.equaled += 1;
-                    self.context.counter += 1;
+                    size += 1;
                 }
-                if self.context.counter >= self.context_radius {
-                    self.context
-                        .data
-                        .push_back(Line::line(i, j, &self.text1[i]));
+                else {
                     self.context.data.pop_front();
                     if let Some(ref mut start) = self.context.start {
                         *start += 1;
                     }
-                    self.context.counter += 1;
                 }
             }
+
             if self.context.changed {
-                if self.context.counter < self.context_radius * 2 {
-                    self.context
-                        .data
-                        .push_back(Line::line(i, j, &self.text1[i]));
+                if size < self.context_radius {
+                    self.context.data.push_back(Line::line(i, j, &self.text1[i]));
                     self.context.equaled += 1;
-                    self.context.counter += 1;
+                    size += 1;
                 }
-                if self.context.counter == self.context_radius && len > self.context_radius * 2 {
+                else {
                     if let Some(hunk) = self.context.to_hunk(self.removed, self.inserted) {
                         self.result.push(hunk);
                     }
 
-                    let mut context = Context::new();
-                    for _ in 0..self.context_radius {
-                        context.data.push_back(Line::line(0, 0, ""));
-                    }
-                    context.counter = self.context_radius;
-                    context.equaled = self.context_radius;
-                    context.start = Some(i - 1);
-
                     self.removed += self.context.removed;
                     self.inserted += self.context.inserted;
-                    self.context = context;
+                    self.context = Context::new();
+                    self.context.data.push_back(Line::line(i, j, &self.text1[i]));
+                    size = 1;
                 }
             }
         }
@@ -147,6 +133,7 @@ impl<'a> diffs::Diff for Processor<'a> {
         for i in old..old + len {
             self.context.data.push_back(Line::remove(i, &self.text1[i]));
         }
+
         self.context.changed = true;
         self.context.removed += len;
 
@@ -161,6 +148,7 @@ impl<'a> diffs::Diff for Processor<'a> {
         for i in new..new + new_len {
             self.context.data.push_back(Line::insert(i, &self.text2[i]));
         }
+
         self.context.changed = true;
         self.context.inserted += new_len;
 
@@ -178,12 +166,16 @@ impl<'a> diffs::Diff for Processor<'a> {
             self.context.start = Some(old);
         }
 
-        for i in old..old + old_len {
-            self.context.data.push_back(Line::remove(i, &self.text1[i]));
+        for (i, j) in (old..old + old_len).zip(new..new + old_len) {
+            let j = if j < (new + new_len) { Some(j) } else { None };
+            self.context.data.push_back(Line::replace_remove(i, j, &self.text1[i]));
         }
-        for i in new..new + new_len {
-            self.context.data.push_back(Line::insert(i, &self.text2[i]));
+
+        for (j, i) in (new..new + new_len).zip(old..old + new_len) {
+            let i = if i < (old + old_len) { Some(i) } else { None };
+            self.context.data.push_back(Line::replace_insert(i, j, &self.text2[j]));
         }
+
         self.context.changed = true;
         self.context.removed += old_len;
         self.context.inserted += new_len;
@@ -192,14 +184,6 @@ impl<'a> diffs::Diff for Processor<'a> {
     }
 
     fn finish(&mut self) -> Result<(), Self::Error> {
-        if self.context.counter > self.context_radius {
-            let truncation = self.context.counter - self.context_radius;
-            if self.context.data.len() > truncation {
-                let new_size = self.context.data.len() - truncation;
-                self.context.equaled -= truncation;
-                self.context.data.truncate(new_size);
-            }
-        }
         if let Some(hunk) = self.context.to_hunk(self.removed, self.inserted) {
             self.result.push(hunk);
         }

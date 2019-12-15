@@ -11,6 +11,7 @@ pub struct Hunk<'a> {
     pub(crate) new_start: usize,
     pub(crate) inserted: usize,
     pub(crate) removed: usize,
+
     pub(crate) lines: Vec<Line<'a>>,
 }
 
@@ -41,11 +42,11 @@ impl<'a> Display for LineDiff<'a> {
         let line = hunk
             .lines
             .iter()
-            .filter(|l| l.kind != LineKind::Removed)
+            .filter(|l| l.kind != LineKind::Removed && l.kind != LineKind::ReplaceRemoved)
             .map(|letter| {
                 if letter.kind == LineKind::Unchanged {
                     format!("{}", letter.inner.dimmed())
-                } else if letter.kind == LineKind::Inserted {
+                } else if letter.kind == LineKind::Inserted || letter.kind == LineKind::ReplaceInserted {
                     format!("{}", letter.inner.reversed())
                 } else {
                     unreachable!("Filters removed. Can't happen")
@@ -58,41 +59,49 @@ impl<'a> Display for LineDiff<'a> {
             ..self.1.clone()
         };
 
-        let mut fmt = line.fmt();
-        fmt.1 = true;
+        let fmt = line.fmt();
         writeln!(f, "{}", fmt)?;
         Ok(())
     }
 }
 
+fn get_with_pos(line: &Line) -> Option<(usize, LineKind)> {
+    match line.kind {
+        LineKind::ReplaceRemoved => Some((line.old_pos?, line.kind)),
+        LineKind::ReplaceInserted => Some((line.old_pos?, line.kind)),
+        _ => None
+    }
+}
+
+fn get_inverted(line: &Line) -> Option<(usize, LineKind)> {
+    get_with_pos(line).map(|(pos, kind)| (pos, kind.invert()))
+}
+
 impl<'a> Display for Hunk<'a> {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        let line_diff = self.inserted == self.removed;
-
         let lines = self
             .lines
             .iter()
-            .map(|line| ((line.new_pos, line.kind), (*line).clone()))
+            .filter(|line| line.kind.is_replaced())
+            .filter_map(|line| {
+                get_with_pos(line).map(|key| (key, (*line).clone()))
+            })
             .collect::<BTreeMap<(usize, LineKind), Line>>();
+
 
         let header = format!(
             "... ...   @@ -{},{} +{},{} @@",
             self.old_start, self.removed, self.new_start, self.inserted
         );
         writeln!(f, "{}", header.on_blue().black().dimmed())?;
+
         for line in self.lines.iter() {
-            let new_pos = line.new_pos;
-            let inverted_kind = line.kind.invert();
-
-            let op = lines.get(&(new_pos, inverted_kind));
-
-            if !line_diff || op.is_none() {
-                writeln!(f, "{}", line.fmt())?;
+            if let Some(inverted) = get_inverted(&line).and_then(|key| lines.get(&key)) {
+                LineDiff(inverted, line).fmt(f)?;
                 continue;
             }
 
-            let op = op.unwrap(); // Previous if filters None;
-            LineDiff(op, line).fmt(f)?
+            writeln!(f, "{}", line.fmt())?;
         }
         Ok(())
     }
