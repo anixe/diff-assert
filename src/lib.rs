@@ -19,17 +19,43 @@ macro_rules! assert_dbg {
 }
 
 #[macro_export]
+macro_rules! try_dbg {
+    ($expected: expr, $actual: expr) => {
+        $crate::try_diff!(
+            format!("{:#?}", $expected),
+            format!("{:#?}", $actual))
+    };
+    ($expected: expr, $actual: expr, $message: literal $(,$message_args: expr)*) => {
+        $crate::try_diff!(
+            format!("{:#?}", $expected),
+            format!("{:#?}", $actual),
+            $message, $($message_args),*)
+    }
+}
+
+#[macro_export]
+macro_rules! try_diff {
+    ($expected: expr, $actual: expr) => {
+        $crate::try_diff!($expected, $actual, "Found differences")
+    };
+    ($expected: expr, $actual: expr, $message: literal $(,$message_args: expr)*) => {
+        $crate::inner_try_diff($expected.lines(), $actual.lines(), format!($message, $($message_args),*))
+    };
+}
+
+
+#[macro_export]
 macro_rules! assert_diff {
     ($expected: expr, $actual: expr) => {
         $crate::assert_diff!($expected, $actual, "Found differences")
     };
     ($expected: expr, $actual: expr, $message: literal $(,$message_args: expr)*) => {
-        $crate::inner_assert_diff($expected.lines(), $actual.lines(), format!($message, $($message_args),*));
+        $crate::inner_assert_diff($expected.lines(), $actual.lines(), format!($message, $($message_args),*))
     };
 }
 
 #[doc(hidden)]
-pub fn inner_assert_diff(expected: Lines, actual: Lines, msg_fmt: String) {
+pub fn inner_try_diff(expected: Lines, actual: Lines, msg_fmt: String) -> Result<(), String> {
     let e: Vec<String> = expected.map(String::from).collect();
     let a: Vec<String> = actual.map(String::from).collect();
     let result = crate::diff_hunks(&e, &a, 3).unwrap();
@@ -40,7 +66,17 @@ pub fn inner_assert_diff(expected: Lines, actual: Lines, msg_fmt: String) {
 
         msg += &result.into_iter().map(|s| s.to_string()).join("\n");
 
-        panic!("{}", msg)
+        Err(msg)
+    }
+    else {
+        Ok(())
+    }
+}
+
+#[doc(hidden)]
+pub fn inner_assert_diff(expected: Lines, actual: Lines, msg_fmt: String) {
+    if let Err(e) = inner_try_diff(expected, actual, msg_fmt) {
+        panic!("{}", e)
     }
 }
 
