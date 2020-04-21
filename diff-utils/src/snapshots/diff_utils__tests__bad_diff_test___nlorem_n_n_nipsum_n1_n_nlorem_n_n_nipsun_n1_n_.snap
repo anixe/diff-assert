@@ -1,0 +1,76 @@
+---
+source: diff-utils/src/lib.rs
+expression: hunks
+---
+CompareResult {
+    hunks: [
+        Hunk {
+            old_start: 1,
+            new_start: 1,
+            inserted: 5,
+            removed: 5,
+            lines: [
+                Line {
+                    kind: Unchanged,
+                    inner: "Lorem ",
+                    old_pos: Some(
+                        1,
+                    ),
+                    new_pos: Some(
+                        1,
+                    ),
+                },
+                Line {
+                    kind: Unchanged,
+                    inner: "",
+                    old_pos: Some(
+                        2,
+                    ),
+                    new_pos: Some(
+                        2,
+                    ),
+                },
+                Line {
+                    kind: Unchanged,
+                    inner: "",
+                    old_pos: Some(
+                        3,
+                    ),
+                    new_pos: Some(
+                        3,
+                    ),
+                },
+                Line {
+                    kind: ReplaceRemoved,
+                    inner: "ipsum",
+                    old_pos: Some(
+                        4,
+                    ),
+                    new_pos: Some(
+                        4,
+                    ),
+                },
+                Line {
+                    kind: ReplaceInserted,
+                    inner: "ipsun",
+                    old_pos: Some(
+                        4,
+                    ),
+                    new_pos: Some(
+                        4,
+                    ),
+                },
+                Line {
+                    kind: Unchanged,
+                    inner: "1",
+                    old_pos: Some(
+                        5,
+                    ),
+                    new_pos: Some(
+                        5,
+                    ),
+                },
+            ],
+        },
+    ],
+}

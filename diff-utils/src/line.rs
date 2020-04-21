@@ -1,7 +1,3 @@
-use colored::*;
-use std::fmt;
-use std::fmt::{Display, Formatter};
-
 #[derive(Debug, Clone)]
 pub struct Line<'a> {
     pub(crate) kind: LineKind,
@@ -20,13 +16,13 @@ pub enum LineKind {
 }
 
 impl LineKind {
-    pub fn invert(&self) -> Self {
+    pub fn invert(self) -> Self {
         match self {
             LineKind::Removed => LineKind::Inserted,
             LineKind::Inserted => LineKind::Removed,
             LineKind::ReplaceInserted => LineKind::ReplaceRemoved,
             LineKind::ReplaceRemoved => LineKind::ReplaceInserted,
-            u => *u,
+            u => u,
         }
     }
 
@@ -38,10 +34,10 @@ impl LineKind {
         }
     }
 
-    pub fn is_replaced(&self) -> bool {
+    pub fn is_replaced(self) -> bool {
         match self {
             LineKind::ReplaceInserted | LineKind::ReplaceRemoved => true,
-            _ => false
+            _ => false,
         }
     }
 }
@@ -89,41 +85,6 @@ impl<'a> Line<'a> {
             inner,
             old_pos: Some(old_pos),
             new_pos: Some(new_pos),
-        }
-    }
-
-    pub fn fmt(&self) -> LineFmt {
-        LineFmt(self)
-    }
-}
-
-pub struct LineFmt<'a>(pub &'a Line<'a>); // line
-
-impl<'a> Display for LineFmt<'a> {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        let line = self.0.inner;
-        let i = self.0.old_pos.map(|p| p + 1);
-        let j = self.0.new_pos.map(|p| p + 1);
-        let sign = self.0.kind.sign();
-
-        let header = match self.0.kind {
-            LineKind::Inserted | LineKind::ReplaceInserted => format!("    {:03}  {}", j.unwrap(), sign.bold()),
-            LineKind::Removed | LineKind::ReplaceRemoved => format!("{:03}      {}", i.unwrap(), sign.bold()),
-            LineKind::Unchanged => format!("{:03} {:03}   ", i.unwrap(), j.unwrap()),
-        };
-
-        match self.0.kind {
-            LineKind::Inserted | LineKind::ReplaceInserted => write!(f, "{}", header.on_black().green()),
-            LineKind::Removed | LineKind::ReplaceRemoved => write!(f, "{}", header.on_black().red()),
-            LineKind::Unchanged => write!(f, "{}", header),
-        }?;
-
-        match self.0.kind {
-            LineKind::ReplaceInserted => write!(f, "{}", line.on_black().green()),
-            LineKind::ReplaceRemoved => write!(f, "{}", line.on_black().red()),
-            LineKind::Inserted => write!(f, "{}", line.on_green().black()),
-            LineKind::Removed => write!(f, "{}", line.on_red().black()),
-            LineKind::Unchanged => write!(f, "{}", line),
         }
     }
 }
