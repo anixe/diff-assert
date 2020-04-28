@@ -78,17 +78,17 @@ impl<'a> fmt::Display for LineDiff<'a> {
             .left
             .inner
             .char_indices()
-            .map(|(idx, _)| &self.left.inner[idx..idx + 1])
+            .map(|(idx, _)| &self.left.inner[idx..=idx])
             .collect::<Vec<_>>();
         let r = self
             .right
             .inner
             .char_indices()
-            .map(|(idx, _)| &self.right.inner[idx..idx + 1])
+            .map(|(idx, _)| &self.right.inner[idx..=idx])
             .collect::<Vec<_>>();
 
         let len = std::cmp::max(self.left.inner.len(), self.right.inner.len());
-        let diff = crate::Comparison {
+        let diff = Comparison {
             left: &l,
             right: &r,
             context_radius: len,
