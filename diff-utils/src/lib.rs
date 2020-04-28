@@ -35,6 +35,29 @@ pub use crate::patch::PatchOptions;
 
 use std::io;
 
+/// Breaking change - it requires `&'a str` instead of `&'a String`.
+#[deprecated(since = "0.3.0", note = "Instead you should use `Comparison::new(..).compare(..)`")]
+pub fn diff_hunks<'a>(left: &'a [&'a str], right: &'a [&'a str], context_radius: usize, )
+                       -> std::io::Result<Vec<Hunk<'a>>> {
+    let comparison = Comparison {left, right, context_radius }.compare()?;
+
+    Ok(comparison.hunks)
+}
+
+#[deprecated(since = "0.3.0", note = "Instead you should use `Comparison::new(..).compare(..)`")]
+#[allow(deprecated)]
+pub fn diff(text1: &[String], text2: &[String], context_radius: usize) -> std::io::Result<Vec<String>> {
+    let left = text1.iter().map(|s| s.as_ref()).collect::<Vec<&str>>();
+    let right = text2.iter().map(|s| s.as_ref()).collect::<Vec<&str>>();
+
+    let result = diff_hunks(&left, &right, context_radius)?
+        .into_iter()
+        .map(|hunk| format!("{}", hunk.display(Default::default())))
+        .collect();
+    Ok(result)
+}
+
+
 pub struct Comparison<'a> {
     pub left: &'a [&'a str],
     pub right: &'a [&'a str],
