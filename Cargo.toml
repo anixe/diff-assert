@@ -1,0 +1,11 @@
+[package]
+name = "diff_assert"
+version = "0.3.0"
+authors = ["Wojciech Polak <wojciech.polak@anixe.pl>"]
+edition = "2018"
+
+[workspace]
+members = ["diff-utils"]
+
+[dependencies]
+diff_utils = { path = "./diff-utils", features = ["display"] }

@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "packageRules": [
+    {
+      "packagePatterns": ["*"],
+      "enabled": false
+    },
+    {
+      "packagePatterns": ["*"],
+      "groupName": "all dependencies",
+      "languages": ["rust"],
+      "enabled": true
+    }
+  ],
+  "baseBranches": ["master"]
+}

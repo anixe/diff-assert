@@ -1,0 +1,164 @@
+---
+source: diff-utils/src/lib.rs
+expression: hunks
+---
+CompareResult {
+    hunks: [
+        Hunk {
+            old_start: 1,
+            new_start: 1,
+            inserted: 7,
+            removed: 7,
+            lines: [
+                Line {
+                    kind: Unchanged,
+                    inner: "2",
+                    old_pos: Some(
+                        1,
+                    ),
+                    new_pos: Some(
+                        1,
+                    ),
+                },
+                Line {
+                    kind: Unchanged,
+                    inner: "3",
+                    old_pos: Some(
+                        2,
+                    ),
+                    new_pos: Some(
+                        2,
+                    ),
+                },
+                Line {
+                    kind: Unchanged,
+                    inner: "4",
+                    old_pos: Some(
+                        3,
+                    ),
+                    new_pos: Some(
+                        3,
+                    ),
+                },
+                Line {
+                    kind: ReplaceRemoved,
+                    inner: "foo",
+                    old_pos: Some(
+                        4,
+                    ),
+                    new_pos: Some(
+                        4,
+                    ),
+                },
+                Line {
+                    kind: ReplaceInserted,
+                    inner: "fou",
+                    old_pos: Some(
+                        4,
+                    ),
+                    new_pos: Some(
+                        4,
+                    ),
+                },
+                Line {
+                    kind: Unchanged,
+                    inner: "1",
+                    old_pos: Some(
+                        5,
+                    ),
+                    new_pos: Some(
+                        5,
+                    ),
+                },
+                Line {
+                    kind: Unchanged,
+                    inner: "2",
+                    old_pos: Some(
+                        6,
+                    ),
+                    new_pos: Some(
+                        6,
+                    ),
+                },
+                Line {
+                    kind: Unchanged,
+                    inner: "3",
+                    old_pos: Some(
+                        7,
+                    ),
+                    new_pos: Some(
+                        7,
+                    ),
+                },
+            ],
+        },
+        Hunk {
+            old_start: 9,
+            new_start: 9,
+            inserted: 4,
+            removed: 4,
+            lines: [
+                Line {
+                    kind: Unchanged,
+                    inner: "4",
+                    old_pos: Some(
+                        8,
+                    ),
+                    new_pos: Some(
+                        8,
+                    ),
+                },
+                Line {
+                    kind: ReplaceRemoved,
+                    inner: "bar",
+                    old_pos: Some(
+                        9,
+                    ),
+                    new_pos: Some(
+                        9,
+                    ),
+                },
+                Line {
+                    kind: ReplaceInserted,
+                    inner: "baz",
+                    old_pos: Some(
+                        9,
+                    ),
+                    new_pos: Some(
+                        9,
+                    ),
+                },
+                Line {
+                    kind: Unchanged,
+                    inner: "1",
+                    old_pos: Some(
+                        10,
+                    ),
+                    new_pos: Some(
+                        10,
+                    ),
+                },
+                Line {
+                    kind: Unchanged,
+                    inner: "2",
+                    old_pos: Some(
+                        11,
+                    ),
+                    new_pos: Some(
+                        11,
+                    ),
+                },
+                Line {
+                    kind: Unchanged,
+                    inner: "3",
+                    old_pos: Some(
+                        12,
+                    ),
+                    new_pos: Some(
+                        12,
+                    ),
+                },
+            ],
+        },
+    ],
+}

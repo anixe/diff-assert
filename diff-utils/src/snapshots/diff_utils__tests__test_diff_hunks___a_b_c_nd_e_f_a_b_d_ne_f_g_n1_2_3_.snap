@@ -1,0 +1,12 @@
+---
+source: diff-utils/src/lib.rs
+expression: hunks
+---
+... ...   @@ -1,2 +1,3 @@
+001      -A B C
+002      -D E F
+    001  +A B D
+    002  +E F G
+    003  +1 2 3
+
+
