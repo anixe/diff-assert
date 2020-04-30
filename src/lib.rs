@@ -1,4 +1,4 @@
-#![deny(
+#![warn(
     missing_docs,
     missing_debug_implementations,
     missing_copy_implementations,
@@ -11,7 +11,7 @@
 )]
 
 //! # About this crate
-//! We designed this crate to replace `assert_eq!` with more powerful `assert_diff` which can show
+//! We designed this crate to replace `assert_eq!` with more powerful `assert_diff!` which can show
 //! exactly what part of actual data differs from expected behaviour.
 //!
 //! You may wonder why another crate like this. We noticed that other crates have significant issues
@@ -20,7 +20,7 @@
 //!
 //! # How to use it?
 //!
-//! The simplest example is to use `assert_diff!` macro:
+//! The simplest example is to use [`assert_diff!`](macro.assert_diff.html) macro:
 //! ```rust,should_panic
 //! # #[macro_use] extern crate diff_assert;
 //! let expected = r#"foo
@@ -31,16 +31,37 @@
 //!
 //! assert_diff!(expected, actual, "Here is an optional message what has changed");
 //! ```
+//!
+//! Another possibility is to use [`try_diff!`](macro.try_diff.html) macro if you don't want to panic.
+//! It returns nice `Result<(), String>` instead.
+//! ```rust
+//! # #[macro_use] extern crate diff_assert;
+//! let expected = r#"foo
+//! bar"#;
+//!
+//! let actual = r#"foo
+//! foo"#;
+//!
+//! if let Err(e) = try_diff!(expected, actual, "Here is an optional message what has changed") {
+//!     eprintln!("Oh nay, we got a difference!");
+//!     eprintln!("{}", e);
+//! }
+//! ```
+//!
+//! Besides that, crate also contains similar macros for comparing not string slices but
+//! [`Debug`](std::fmt::Debug) format outputs. It is quite handy for testing intermediate outputs.
+//! * [`assert_dbg!`](macro.assert_dbg.html)
+//! * [`try_dbg!`](macro.try_dbg.html)
 
 pub use diff_utils::*;
 use std::str::Lines;
 
-/// Asserts equality between `Debug` output of any two objects.
+/// Asserts equality between [`Debug`](std::fmt::Debug) output of any two objects.
 /// Internally it uses `try_dbg!` and then panics if outputs are not equal.
 ///
 /// # Input
-/// `$expected` - Expected outcome. Has to implement `Debug` trait,
-/// `$actual` - Actual outcome. Has to implement `Debug` trait,
+/// `$expected` - Expected outcome. Has to implement [`Debug`](std::fmt::Debug) trait,
+/// `$actual` - Actual outcome. Has to implement [`Debug`](std::fmt::Debug) trait,
 /// `$message_args` - Optional message when assertion fails.
 ///
 /// # Panics
@@ -73,11 +94,11 @@ macro_rules! assert_dbg {
     }
 }
 
-/// Checks equality between `Debug` output of any two objects and returns Err(String) if it fails.
+/// Checks equality between [`Debug`](std::fmt::Debug) output of any two objects and returns Err(String) if it fails.
 ///
 /// # Input
-/// `$expected` - Expected outcome. Has to implement `Debug` trait,
-/// `$actual` - Actual outcome. Has to implement `Debug` trait,
+/// `$expected` - Expected outcome. Has to implement [`Debug`](std::fmt::Debug) trait,
+/// `$actual` - Actual outcome. Has to implement [`Debug`](std::fmt::Debug) trait,
 /// `$message_args` - Optional message when objects are not equal.
 ///
 /// # Errors
@@ -153,7 +174,7 @@ macro_rules! try_diff {
 }
 
 /// Asserts equality between lines of any two objects.
-/// Internally it uses `try_diff!` and then panics if outputs are not equal.
+/// Internally it uses [`try_diff!`](macro.try_diff.html) and then panics if outputs are not equal.
 /// This macro requires that arguments have method:
 /// ```ignore
 /// fn lines(&self) -> std::str::Lines;

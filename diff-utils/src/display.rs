@@ -9,13 +9,53 @@ use itertools::Itertools;
 use std::collections::BTreeMap;
 use std::fmt;
 
-#[derive(Clone, Copy, Default)]
+/// Options for displaying diffs.
+#[derive(Clone, Copy, Default, Debug)]
 pub struct DisplayOptions<'a> {
+    /// Sometimes user want's to compare only subslice of a full str. This argument gives
+    /// possibility to "move" whole diff to proper offset.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use diff_utils::{Comparison, DisplayOptions};
+    /// let file_a = (0..1000).map(|i| if i%2 == 0 { "foo\n" } else { "bar\n" }).collect::<Vec<&str>>();
+    /// let file_b = (0..1000).map(|i| if i%5 == 0 { "foo\n" } else { "bar\n" }).collect::<Vec<&str>>();
+    ///
+    /// let subslice_a = file_a.into_iter().skip(123).take(10).collect::<Vec<&str>>();
+    /// let subslice_b = file_b.into_iter().skip(123).take(10).collect::<Vec<&str>>();
+    ///
+    /// let result = Comparison::new(&subslice_a, &subslice_b).compare().unwrap();
+    /// println!("{}", result.display(DisplayOptions { offset: 123, ..Default::default() }));
+    /// ```
+    ///
+    /// Thanks to the `offset` the output will be:
+    /// ```ignore
+    /// ... ...   @@ -124,10 +124,10 @@
+    /// 124 124   bar
+    /// 125      -foo
+    /// 126 125   bar
+    /// 127 126   foo
+    /// 128 127   bar
+    /// 129      -foo
+    /// 130 128   bar
+    /// 131      -foo
+    ///     129  +bar
+    /// 132 130   bar
+    /// 133 131   foo
+    ///     132  +bar
+    ///     133  +bar
+    /// ```
+    ///
+    /// Default value: 0
     pub offset: usize,
+    /// Print extra message before writing diff itself.
+    /// It is mostly used to specify the filenames
     pub msg_fmt: &'a str,
 }
 
 impl<'a> Line<'a> {
+    /// Returns a structure which implements [`Display`](std::fmt::Display) with ANSI escape color codes.
     pub fn display(&'a self, options: DisplayOptions<'a>) -> LineDisplay<'a> {
         LineDisplay {
             line: self,
@@ -24,6 +64,9 @@ impl<'a> Line<'a> {
     }
 }
 
+/// Structure which implements [`Display`](std::fmt::Display) with ANSI escape color codes. It is a
+/// wrapper to the [`Line`](struct.Line.html).
+#[derive(Debug)]
 pub struct LineDisplay<'a> {
     line: &'a Line<'a>,
     options: DisplayOptions<'a>,
@@ -141,6 +184,7 @@ fn get_inverted(line: &Line) -> Option<(usize, LineKind)> {
 }
 
 impl<'a> Hunk<'a> {
+    /// Returns a structure which implements [`Display`](std::fmt::Display) with ANSI escape color codes.
     pub fn display(&'a self, options: DisplayOptions<'a>) -> HunkDisplay<'a> {
         HunkDisplay {
             hunk: self,
@@ -149,6 +193,9 @@ impl<'a> Hunk<'a> {
     }
 }
 
+/// Structure which implements [`Display`](std::fmt::Display) with ANSI escape color codes. It is a
+/// wrapper to the [`Hunk`](struct.Hunk.html).
+#[derive(Debug)]
 pub struct HunkDisplay<'a> {
     hunk: &'a Hunk<'a>,
     options: DisplayOptions<'a>,
@@ -166,7 +213,10 @@ impl<'a> fmt::Display for HunkDisplay<'a> {
 
         let header = format!(
             "... ...   @@ -{},{} +{},{} @@",
-            self.hunk.old_start, self.hunk.removed, self.hunk.new_start, self.hunk.inserted
+            self.hunk.old_start + self.options.offset,
+            self.hunk.removed,
+            self.hunk.new_start + self.options.offset,
+            self.hunk.inserted
         );
         writeln!(f, "{}", header.on_blue().black().dimmed())?;
 
@@ -188,6 +238,7 @@ impl<'a> fmt::Display for HunkDisplay<'a> {
 }
 
 impl<'a> CompareResult<'a> {
+    /// Returns a structure which implements [`Display`](std::fmt::Display) with ANSI escape color codes.
     pub fn display(&'a self, options: DisplayOptions<'a>) -> CompareResultDisplay<'a> {
         CompareResultDisplay {
             result: self,
@@ -196,6 +247,9 @@ impl<'a> CompareResult<'a> {
     }
 }
 
+/// Structure which implements [`Display`](std::fmt::Display) with ANSI escape color codes. It is a
+/// wrapper to the [`CompareResult`](struct.CompareResult.html).
+#[derive(Debug)]
 pub struct CompareResultDisplay<'a> {
     result: &'a CompareResult<'a>,
     options: DisplayOptions<'a>,
@@ -219,26 +273,5 @@ impl<'a> fmt::Display for CompareResultDisplay<'a> {
         } else {
             Ok(())
         }
-    }
-}
-
-impl<'a> Comparison<'a> {
-    pub fn display(&'a self, options: DisplayOptions<'a>) -> ComparisonDisplay<'a> {
-        ComparisonDisplay {
-            comparison: self,
-            options,
-        }
-    }
-}
-
-pub struct ComparisonDisplay<'a> {
-    comparison: &'a Comparison<'a>,
-    options: DisplayOptions<'a>,
-}
-
-impl<'a> fmt::Display for ComparisonDisplay<'a> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let result = self.comparison.compare().unwrap();
-        result.display(self.options).fmt(f)
     }
 }
