@@ -16,11 +16,7 @@ pub(crate) struct Context<'a> {
 
 impl<'a> Context<'a> {
     pub fn create_hunk(&mut self, removed: usize, inserted: usize) -> Option<Hunk<'a>> {
-        let mut start = if let Some(start) = self.start {
-            start
-        } else {
-            return None;
-        };
+        let mut start = self.start?;
         if start == 0 {
             start = 1;
         }
