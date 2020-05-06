@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 cargo readme > README.md
 cd diff-utils/
