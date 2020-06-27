@@ -1,0 +1,1507 @@
+[ast]
+Some(
+    Ion {
+        node: N954,
+        sections: [
+            Section {
+                node: N129,
+                name: Some(
+                    "CONTRACT",
+                ),
+                content: Some(
+                    Fields(
+                        [
+                            Field {
+                                node: N9,
+                                key: Some(
+                                    FieldKey {
+                                        node: N4,
+                                        name: Some(
+                                            "source",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    String(
+                                        IonString {
+                                            node: N8,
+                                            value: Some(
+                                                "MEETINGPOINT",
+                                            ),
+                                        },
+                                    ),
+                                ),
+                            },
+                            Field {
+                                node: N16,
+                                key: Some(
+                                    FieldKey {
+                                        node: N11,
+                                        name: Some(
+                                            "id",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    String(
+                                        IonString {
+                                            node: N15,
+                                            value: Some(
+                                                "NYC0000Z",
+                                            ),
+                                        },
+                                    ),
+                                ),
+                            },
+                            Field {
+                                node: N23,
+                                key: Some(
+                                    FieldKey {
+                                        node: N18,
+                                        name: Some(
+                                            "name",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    String(
+                                        IonString {
+                                            node: N22,
+                                            value: Some(
+                                                "Wellington Hotel",
+                                            ),
+                                        },
+                                    ),
+                                ),
+                            },
+                            Field {
+                                node: N30,
+                                key: Some(
+                                    FieldKey {
+                                        node: N25,
+                                        name: Some(
+                                            "active",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    Boolean(
+                                        Boolean {
+                                            node: N29,
+                                            value: false,
+                                        },
+                                    ),
+                                ),
+                            },
+                            Field {
+                                node: N37,
+                                key: Some(
+                                    FieldKey {
+                                        node: N32,
+                                        name: Some(
+                                            "hotel_code",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    String(
+                                        IonString {
+                                            node: N36,
+                                            value: Some(
+                                                "NYC0000Z",
+                                            ),
+                                        },
+                                    ),
+                                ),
+                            },
+                            Field {
+                                node: N44,
+                                key: Some(
+                                    FieldKey {
+                                        node: N39,
+                                        name: Some(
+                                            "currency",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    String(
+                                        IonString {
+                                            node: N43,
+                                            value: Some(
+                                                "EUR",
+                                            ),
+                                        },
+                                    ),
+                                ),
+                            },
+                            Field {
+                                node: N51,
+                                key: Some(
+                                    FieldKey {
+                                        node: N46,
+                                        name: Some(
+                                            "city",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    String(
+                                        IonString {
+                                            node: N50,
+                                            value: Some(
+                                                "NYC",
+                                            ),
+                                        },
+                                    ),
+                                ),
+                            },
+                            Field {
+                                node: N64,
+                                key: Some(
+                                    FieldKey {
+                                        node: N53,
+                                        name: Some(
+                                            "destinations",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    Array(
+                                        Array {
+                                            node: N63,
+                                            values: [
+                                                String(
+                                                    IonString {
+                                                        node: N58,
+                                                        value: Some(
+                                                            "NYC",
+                                                        ),
+                                                    },
+                                                ),
+                                                String(
+                                                    IonString {
+                                                        node: N61,
+                                                        value: Some(
+                                                            "WAW",
+                                                        ),
+                                                    },
+                                                ),
+                                            ],
+                                        },
+                                    ),
+                                ),
+                            },
+                            Field {
+                                node: N78,
+                                key: Some(
+                                    FieldKey {
+                                        node: N66,
+                                        name: Some(
+                                            "clients",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    Array(
+                                        Array {
+                                            node: N77,
+                                            values: [
+                                                String(
+                                                    IonString {
+                                                        node: N71,
+                                                        value: Some(
+                                                            "FTI",
+                                                        ),
+                                                    },
+                                                ),
+                                                String(
+                                                    IonString {
+                                                        node: N73,
+                                                        value: Some(
+                                                            "YT",
+                                                        ),
+                                                    },
+                                                ),
+                                                String(
+                                                    IonString {
+                                                        node: N75,
+                                                        value: Some(
+                                                            "BIGXTRA",
+                                                        ),
+                                                    },
+                                                ),
+                                            ],
+                                        },
+                                    ),
+                                ),
+                            },
+                            Field {
+                                node: N90,
+                                key: Some(
+                                    FieldKey {
+                                        node: N80,
+                                        name: Some(
+                                            "markets",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    Array(
+                                        Array {
+                                            node: N89,
+                                            values: [
+                                                String(
+                                                    IonString {
+                                                        node: N85,
+                                                        value: Some(
+                                                            "de",
+                                                        ),
+                                                    },
+                                                ),
+                                                String(
+                                                    IonString {
+                                                        node: N87,
+                                                        value: Some(
+                                                            "gb",
+                                                        ),
+                                                    },
+                                                ),
+                                            ],
+                                        },
+                                    ),
+                                ),
+                            },
+                            Field {
+                                node: N106,
+                                key: Some(
+                                    FieldKey {
+                                        node: N92,
+                                        name: Some(
+                                            "brands",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    Array(
+                                        Array {
+                                            node: N105,
+                                            values: [
+                                                String(
+                                                    IonString {
+                                                        node: N97,
+                                                        value: Some(
+                                                            "ES",
+                                                        ),
+                                                    },
+                                                ),
+                                                String(
+                                                    IonString {
+                                                        node: N100,
+                                                        value: Some(
+                                                            "mpg.malta",
+                                                        ),
+                                                    },
+                                                ),
+                                                String(
+                                                    IonString {
+                                                        node: N103,
+                                                        value: Some(
+                                                            "PL",
+                                                        ),
+                                                    },
+                                                ),
+                                            ],
+                                        },
+                                    ),
+                                ),
+                            },
+                            Field {
+                                node: N113,
+                                key: Some(
+                                    FieldKey {
+                                        node: N108,
+                                        name: Some(
+                                            "type",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    String(
+                                        IonString {
+                                            node: N112,
+                                            value: Some(
+                                                "D",
+                                            ),
+                                        },
+                                    ),
+                                ),
+                            },
+                            Field {
+                                node: N120,
+                                key: Some(
+                                    FieldKey {
+                                        node: N115,
+                                        name: Some(
+                                            "tenant",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    String(
+                                        IonString {
+                                            node: N119,
+                                            value: Some(
+                                                "mpg",
+                                            ),
+                                        },
+                                    ),
+                                ),
+                            },
+                            Field {
+                                node: N127,
+                                key: Some(
+                                    FieldKey {
+                                        node: N122,
+                                        name: Some(
+                                            "channel",
+                                        ),
+                                    },
+                                ),
+                                value: Some(
+                                    String(
+                                        IonString {
+                                            node: N126,
+                                            value: Some(
+                                                "HX",
+                                            ),
+                                        },
+                                    ),
+                                ),
+                            },
+                        ],
+                    ),
+                ),
+            },
+            Section {
+                node: N401,
+                name: Some(
+                    "DEF.HOTEL",
+                ),
+                content: Some(
+                    Table(
+                        Table {
+                            node: N399,
+                            header: Some(
+                                Row {
+                                    node: N201,
+                                    cells: [
+                                        Cell {
+                                            node: N139,
+                                            leading_trivia: Some(
+                                                N136,
+                                            ),
+                                            content: Some(
+                                                "hc",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N138,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N144,
+                                            leading_trivia: Some(
+                                                N141,
+                                            ),
+                                            content: Some(
+                                                "hn",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N143,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N149,
+                                            leading_trivia: Some(
+                                                N146,
+                                            ),
+                                            content: Some(
+                                                "cat",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N148,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N154,
+                                            leading_trivia: Some(
+                                                N151,
+                                            ),
+                                            content: Some(
+                                                "co",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N153,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N159,
+                                            leading_trivia: Some(
+                                                N156,
+                                            ),
+                                            content: Some(
+                                                "c",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N158,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N164,
+                                            leading_trivia: Some(
+                                                N161,
+                                            ),
+                                            content: Some(
+                                                "r",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N163,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N169,
+                                            leading_trivia: Some(
+                                                N166,
+                                            ),
+                                            content: Some(
+                                                "d",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N168,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N174,
+                                            leading_trivia: Some(
+                                                N171,
+                                            ),
+                                            content: Some(
+                                                "cn",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N173,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N179,
+                                            leading_trivia: Some(
+                                                N176,
+                                            ),
+                                            content: Some(
+                                                "postal",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N178,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N184,
+                                            leading_trivia: Some(
+                                                N181,
+                                            ),
+                                            content: Some(
+                                                "street",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N183,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N189,
+                                            leading_trivia: Some(
+                                                N186,
+                                            ),
+                                            content: Some(
+                                                "lat",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N188,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N194,
+                                            leading_trivia: Some(
+                                                N191,
+                                            ),
+                                            content: Some(
+                                                "lon",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N193,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N199,
+                                            leading_trivia: Some(
+                                                N196,
+                                            ),
+                                            content: Some(
+                                                "j",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N198,
+                                            ),
+                                        },
+                                    ],
+                                },
+                            ),
+                            rows: [
+                                Row {
+                                    node: N397,
+                                    cells: [
+                                        Cell {
+                                            node: N249,
+                                            leading_trivia: Some(
+                                                N246,
+                                            ),
+                                            content: Some(
+                                                "NYC0000Z",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N248,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N256,
+                                            leading_trivia: Some(
+                                                N251,
+                                            ),
+                                            content: Some(
+                                                "Wellington Hotel",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N255,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N261,
+                                            leading_trivia: Some(
+                                                N258,
+                                            ),
+                                            content: Some(
+                                                "4",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N260,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N266,
+                                            leading_trivia: Some(
+                                                N263,
+                                            ),
+                                            content: Some(
+                                                "US",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N265,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N271,
+                                            leading_trivia: Some(
+                                                N268,
+                                            ),
+                                            content: Some(
+                                                "NYC",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N270,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N276,
+                                            leading_trivia: Some(
+                                                N273,
+                                            ),
+                                            content: Some(
+                                                "2",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N275,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N283,
+                                            leading_trivia: Some(
+                                                N278,
+                                            ),
+                                            content: Some(
+                                                "New York",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N282,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N288,
+                                            leading_trivia: Some(
+                                                N285,
+                                            ),
+                                            content: Some(
+                                                "Deira",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N287,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N293,
+                                            leading_trivia: Some(
+                                                N290,
+                                            ),
+                                            content: Some(
+                                                "120328",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N292,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N302,
+                                            leading_trivia: Some(
+                                                N295,
+                                            ),
+                                            content: Some(
+                                                "Test street 1",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N301,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N307,
+                                            leading_trivia: Some(
+                                                N304,
+                                            ),
+                                            content: Some(
+                                                "25.2648906707764",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N306,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N312,
+                                            leading_trivia: Some(
+                                                N309,
+                                            ),
+                                            content: Some(
+                                                "55.3219795227051",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N311,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N395,
+                                            leading_trivia: Some(
+                                                N314,
+                                            ),
+                                            content: Some(
+                                                "{\"street2\": \"Test street 2\", \"website\":\"example.com\",\"tz\": \"GMT +01:00\", \"s\": \"AZ\", \"sn\": \"Arizona\", \"fax\": \"+1 123 456\", \"email\": \"hotel@example.com\", \"phone\": \"+1 123 123\", \"contacts\":[{\"id\": \"123fasnj\",\"email\": \"john.doe@example.com\",\"phone\": \"+1 1234\", \"name\": \"John Doe\", \"kind\": \"reservations\"},{\"id\": \"2412swk\",\"email\": \"melanie.doe@example.com\",\"phone\": \"+1 2455\", \"name\": \"Melanie Doe\", \"kind\": \"reservations\"}]}",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N394,
+                                            ),
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ),
+                ),
+            },
+            Section {
+                node: N494,
+                name: Some(
+                    "DEF.MEAL",
+                ),
+                content: Some(
+                    Table(
+                        Table {
+                            node: N492,
+                            header: Some(
+                                Row {
+                                    node: N422,
+                                    cells: [
+                                        Cell {
+                                            node: N410,
+                                            leading_trivia: Some(
+                                                N407,
+                                            ),
+                                            content: Some(
+                                                "code",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N409,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N415,
+                                            leading_trivia: Some(
+                                                N412,
+                                            ),
+                                            content: Some(
+                                                "description",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N414,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N420,
+                                            leading_trivia: Some(
+                                                N417,
+                                            ),
+                                            content: Some(
+                                                "group",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N419,
+                                            ),
+                                        },
+                                    ],
+                                },
+                            ),
+                            rows: [
+                                Row {
+                                    node: N452,
+                                    cells: [
+                                        Cell {
+                                            node: N440,
+                                            leading_trivia: Some(
+                                                N437,
+                                            ),
+                                            content: Some(
+                                                "RO",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N439,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N447,
+                                            leading_trivia: Some(
+                                                N442,
+                                            ),
+                                            content: Some(
+                                                "Room Only",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N446,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N450,
+                                            leading_trivia: Some(
+                                                N449,
+                                            ),
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                            trailing_trivia: None,
+                                        },
+                                    ],
+                                },
+                                Row {
+                                    node: N472,
+                                    cells: [
+                                        Cell {
+                                            node: N458,
+                                            leading_trivia: Some(
+                                                N455,
+                                            ),
+                                            content: Some(
+                                                "BB",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N457,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N467,
+                                            leading_trivia: Some(
+                                                N460,
+                                            ),
+                                            content: Some(
+                                                "Bed and Breakfast",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N466,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N470,
+                                            leading_trivia: Some(
+                                                N469,
+                                            ),
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                            trailing_trivia: None,
+                                        },
+                                    ],
+                                },
+                                Row {
+                                    node: N490,
+                                    cells: [
+                                        Cell {
+                                            node: N478,
+                                            leading_trivia: Some(
+                                                N475,
+                                            ),
+                                            content: Some(
+                                                "HB",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N477,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N485,
+                                            leading_trivia: Some(
+                                                N480,
+                                            ),
+                                            content: Some(
+                                                "Half Board",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N484,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N488,
+                                            leading_trivia: Some(
+                                                N487,
+                                            ),
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                            trailing_trivia: None,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ),
+                ),
+            },
+            Section {
+                node: N705,
+                name: Some(
+                    "DEF.ROOM",
+                ),
+                content: Some(
+                    Table(
+                        Table {
+                            node: N703,
+                            header: Some(
+                                Row {
+                                    node: N530,
+                                    cells: [
+                                        Cell {
+                                            node: N503,
+                                            leading_trivia: Some(
+                                                N500,
+                                            ),
+                                            content: Some(
+                                                "code",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N502,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N508,
+                                            leading_trivia: Some(
+                                                N505,
+                                            ),
+                                            content: Some(
+                                                "description",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N507,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N513,
+                                            leading_trivia: Some(
+                                                N510,
+                                            ),
+                                            content: Some(
+                                                "occ",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N512,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N518,
+                                            leading_trivia: Some(
+                                                N515,
+                                            ),
+                                            content: Some(
+                                                "grp",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N517,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N523,
+                                            leading_trivia: Some(
+                                                N520,
+                                            ),
+                                            content: Some(
+                                                "properties",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N522,
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N528,
+                                            leading_trivia: Some(
+                                                N525,
+                                            ),
+                                            content: Some(
+                                                "base_meal",
+                                            ),
+                                            trailing_trivia: Some(
+                                                N527,
+                                            ),
+                                        },
+                                    ],
+                                },
+                            ),
+                            rows: [
+                                Row {
+                                    node: N588,
+                                    cells: [
+                                        Cell {
+                                            node: N557,
+                                            content: Some(
+                                                "  100 ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N564,
+                                            content: Some(
+                                                " Twin Room       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N575,
+                                            content: Some(
+                                                " P1:9 A1:9 C0:2 MCA0:4[17:17]    ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N580,
+                                            content: Some(
+                                                " DZ  ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N583,
+                                            content: Some(
+                                                "            ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N586,
+                                            content: Some(
+                                                "           ",
+                                            ),
+                                        },
+                                    ],
+                                },
+                                Row {
+                                    node: N625,
+                                    cells: [
+                                        Cell {
+                                            node: N594,
+                                            content: Some(
+                                                "  200 ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N601,
+                                            content: Some(
+                                                " Apartment Annex ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N612,
+                                            content: Some(
+                                                " P2:8 A1:7 C1:4 MCA0:9[17:17]    ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N617,
+                                            content: Some(
+                                                " APN ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N620,
+                                            content: Some(
+                                                "            ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N623,
+                                            content: Some(
+                                                "           ",
+                                            ),
+                                        },
+                                    ],
+                                },
+                                Row {
+                                    node: N662,
+                                    cells: [
+                                        Cell {
+                                            node: N631,
+                                            content: Some(
+                                                "  300 ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N638,
+                                            content: Some(
+                                                " Free Child      ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N649,
+                                            content: Some(
+                                                " P1:9 A1:9 FC0:4 MCA0:9[17:17]   ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N654,
+                                            content: Some(
+                                                " APN ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N657,
+                                            content: Some(
+                                                "            ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N660,
+                                            content: Some(
+                                                "           ",
+                                            ),
+                                        },
+                                    ],
+                                },
+                                Row {
+                                    node: N701,
+                                    cells: [
+                                        Cell {
+                                            node: N668,
+                                            content: Some(
+                                                "  400 ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N677,
+                                            content: Some(
+                                                " Free Child Pax  ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N688,
+                                            content: Some(
+                                                " P1:9 A1:9 FCP0:4 MCA0:9[17:17]  ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N693,
+                                            content: Some(
+                                                " APN ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N696,
+                                            content: Some(
+                                                "            ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N699,
+                                            content: Some(
+                                                "           ",
+                                            ),
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ),
+                ),
+            },
+            Section {
+                node: N953,
+                name: Some(
+                    "RATE.PLAN",
+                ),
+                content: Some(
+                    Table(
+                        Table {
+                            node: N952,
+                            header: Some(
+                                Row {
+                                    node: N741,
+                                    cells: [
+                                        Cell {
+                                            node: N714,
+                                            content: Some(
+                                                " dates ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N719,
+                                            content: Some(
+                                                " code ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N724,
+                                            content: Some(
+                                                " description ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N729,
+                                            content: Some(
+                                                "  rooms  ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N734,
+                                            content: Some(
+                                                " rules ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N739,
+                                            content: Some(
+                                                " properties ",
+                                            ),
+                                        },
+                                    ],
+                                },
+                            ),
+                            rows: [
+                                Row {
+                                    node: N789,
+                                    cells: [
+                                        Cell {
+                                            node: N766,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N771,
+                                            content: Some(
+                                                " STD  ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N776,
+                                            content: Some(
+                                                " Standard    ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N781,
+                                            content: Some(
+                                                " 200,100 ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N784,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N787,
+                                            content: Some(
+                                                "            ",
+                                            ),
+                                        },
+                                    ],
+                                },
+                                Row {
+                                    node: N816,
+                                    cells: [
+                                        Cell {
+                                            node: N793,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N798,
+                                            content: Some(
+                                                " T1   ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N803,
+                                            content: Some(
+                                                " Test        ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N808,
+                                            content: Some(
+                                                " 200,100 ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N811,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N814,
+                                            content: Some(
+                                                "            ",
+                                            ),
+                                        },
+                                    ],
+                                },
+                                Row {
+                                    node: N843,
+                                    cells: [
+                                        Cell {
+                                            node: N820,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N825,
+                                            content: Some(
+                                                " T2   ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N830,
+                                            content: Some(
+                                                " Test        ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N835,
+                                            content: Some(
+                                                " 200,100 ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N838,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N841,
+                                            content: Some(
+                                                "            ",
+                                            ),
+                                        },
+                                    ],
+                                },
+                                Row {
+                                    node: N870,
+                                    cells: [
+                                        Cell {
+                                            node: N847,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N852,
+                                            content: Some(
+                                                " T3   ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N857,
+                                            content: Some(
+                                                " Test        ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N862,
+                                            content: Some(
+                                                " 200,100 ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N865,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N868,
+                                            content: Some(
+                                                "            ",
+                                            ),
+                                        },
+                                    ],
+                                },
+                                Row {
+                                    node: N897,
+                                    cells: [
+                                        Cell {
+                                            node: N874,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N879,
+                                            content: Some(
+                                                " T4   ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N884,
+                                            content: Some(
+                                                " Test        ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N889,
+                                            content: Some(
+                                                " 200,100 ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N892,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N895,
+                                            content: Some(
+                                                "            ",
+                                            ),
+                                        },
+                                    ],
+                                },
+                                Row {
+                                    node: N924,
+                                    cells: [
+                                        Cell {
+                                            node: N901,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N906,
+                                            content: Some(
+                                                " T5   ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N911,
+                                            content: Some(
+                                                " Test        ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N916,
+                                            content: Some(
+                                                " 200,100 ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N919,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N922,
+                                            content: Some(
+                                                "            ",
+                                            ),
+                                        },
+                                    ],
+                                },
+                                Row {
+                                    node: N951,
+                                    cells: [
+                                        Cell {
+                                            node: N928,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N933,
+                                            content: Some(
+                                                " T6   ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N938,
+                                            content: Some(
+                                                " Test        ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N943,
+                                            content: Some(
+                                                " 200,100 ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N946,
+                                            content: Some(
+                                                "       ",
+                                            ),
+                                        },
+                                        Cell {
+                                            node: N949,
+                                            content: Some(
+                                                "            ",
+                                            ),
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ),
+                ),
+            },
+        ],
+    },
+)
+
+[parser]

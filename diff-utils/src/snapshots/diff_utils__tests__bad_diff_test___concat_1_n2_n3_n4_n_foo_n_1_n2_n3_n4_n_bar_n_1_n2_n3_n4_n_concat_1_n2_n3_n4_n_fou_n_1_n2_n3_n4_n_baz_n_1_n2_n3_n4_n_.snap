@@ -7,8 +7,8 @@ CompareResult {
         Hunk {
             old_start: 1,
             new_start: 1,
-            inserted: 7,
-            removed: 7,
+            inserted: 13,
+            removed: 13,
             lines: [
                 Line {
                     kind: Unchanged,
@@ -90,14 +90,6 @@ CompareResult {
                         7,
                     ),
                 },
-            ],
-        },
-        Hunk {
-            old_start: 9,
-            new_start: 9,
-            inserted: 4,
-            removed: 4,
-            lines: [
                 Line {
                     kind: Unchanged,
                     inner: "4",
@@ -156,6 +148,16 @@ CompareResult {
                     ),
                     new_pos: Some(
                         12,
+                    ),
+                },
+                Line {
+                    kind: Unchanged,
+                    inner: "4",
+                    old_pos: Some(
+                        13,
+                    ),
+                    new_pos: Some(
+                        13,
                     ),
                 },
             ],

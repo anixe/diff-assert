@@ -49,7 +49,7 @@ impl<'a> diffs::Diff for Processor<'a> {
             if !self.context.changed {
                 self.context
                     .data
-                    .push_back(Line::new_line(i, j, &self.text1[i]));
+                    .push_back(Line::unchanged(i, j, &self.text1[i]));
                 if size < self.context_radius {
                     self.context.equaled += 1;
                     size += 1;
@@ -62,24 +62,40 @@ impl<'a> diffs::Diff for Processor<'a> {
             }
 
             if self.context.changed {
-                if size < self.context_radius {
+                /*
+                We want * 2 in case next hunk would be adjacent to the current one.
+                 */
+                if size < self.context_radius * 2 {
                     self.context
                         .data
-                        .push_back(Line::new_line(i, j, &self.text1[i]));
+                        .push_back(Line::unchanged(i, j, &self.text1[i]));
                     self.context.equaled += 1;
                     size += 1;
                 } else {
+                    // But if there are more unchanged lines between two changes than context_radius * 2,
+                    // then we want to split hunk into smaller.
+                    let diff = size - self.context_radius;
+
+                    let at = self.context.data.len() - diff;
+                    let mut removed = self.context.data.split_off(at);
+                    self.context.equaled -= diff;
+
                     if let Some(hunk) = self.context.create_hunk(self.removed, self.inserted) {
                         self.result.push(hunk);
                     }
 
                     self.removed += self.context.removed;
                     self.inserted += self.context.inserted;
+
+                    removed.pop_front();
                     self.context = Context::default();
+                    self.context.start = Some(i - removed.len());
+                    self.context.equaled += removed.len() + 1;
+                    size = removed.len() + 1;
+                    self.context.data.extend(removed.into_iter());
                     self.context
                         .data
-                        .push_back(Line::new_line(i, j, &self.text1[i]));
-                    size = 1;
+                        .push_back(Line::unchanged(i, j, &self.text1[i]));
                 }
             }
         }

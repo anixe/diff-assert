@@ -87,7 +87,7 @@ impl<'a> Line<'a> {
         }
     }
 
-    pub(crate) fn new_line(old_pos: usize, new_pos: usize, inner: &'a str) -> Self {
+    pub(crate) fn unchanged(old_pos: usize, new_pos: usize, inner: &'a str) -> Self {
         Line {
             kind: LineKind::Unchanged,
             inner,

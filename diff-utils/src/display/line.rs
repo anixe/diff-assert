@@ -24,8 +24,8 @@ pub struct LineDisplay<'a> {
 impl<'a> fmt::Display for LineDisplay<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let line = self.line.inner;
-        let i = self.line.old_pos.map(|p| p + 1 + self.options.offset);
-        let j = self.line.new_pos.map(|p| p + 1 + self.options.offset);
+        let i = self.line.old_pos.map(|p| p + self.options.offset);
+        let j = self.line.new_pos.map(|p| p + self.options.offset);
         let sign = self.line.kind.sign();
 
         let header = match self.line.kind {

@@ -1,5 +1,5 @@
 /// Options for displaying diffs.
-#[derive(Clone, Copy, Default, Debug)]
+#[derive(Clone, Copy, Debug)]
 pub struct DisplayOptions<'a> {
     /// Sometimes user want's to compare only subslice of a full str. This argument gives
     /// possibility to "move" whole diff to proper offset.
@@ -36,9 +36,18 @@ pub struct DisplayOptions<'a> {
     ///     133  +bar
     /// ```
     ///
-    /// Default value: 0
+    /// Default value: 1 - because in IT we count offsets from 0 but in files we count lines from 1
     pub offset: usize,
     /// Print extra message before writing diff itself.
     /// It is mostly used to specify the filenames
     pub msg_fmt: &'a str,
+}
+
+impl<'a> Default for DisplayOptions<'a> {
+    fn default() -> Self {
+        Self {
+            offset: 1,
+            msg_fmt: Default::default()
+        }
+    }
 }

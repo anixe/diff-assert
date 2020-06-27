@@ -16,10 +16,7 @@ pub(crate) struct Context<'a> {
 
 impl<'a> Context<'a> {
     pub fn create_hunk(&mut self, removed: usize, inserted: usize) -> Option<Hunk<'a>> {
-        let mut start = self.start?;
-        if start == 0 {
-            start = 1;
-        }
+        let start = self.start?;
         if self.changed {
             let mut data = VecDeque::new();
             data.append(&mut self.data);

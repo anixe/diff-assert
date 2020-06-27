@@ -9,7 +9,7 @@ use std::borrow::Cow;
 use std::fmt;
 
 /// Options for creating patch files
-#[derive(Clone, Copy, Default, Debug)]
+#[derive(Clone, Copy, Debug)]
 pub struct PatchOptions {
     /// Sometimes user want's to compare only subslice of a full str. This argument gives
     /// possibility to "move" whole patch to proper offset.
@@ -60,8 +60,16 @@ pub struct PatchOptions {
     /// +bar
     /// ```
     ///
-    /// Default value: 0
+    /// Default value: 1 - because in IT we count offsets from 0 but in files we count lines from 1
     pub offset: usize,
+}
+
+impl Default for PatchOptions {
+    fn default() -> Self {
+        Self {
+            offset: 1
+        }
+    }
 }
 
 impl<'a> Hunk<'a> {
@@ -70,7 +78,7 @@ impl<'a> Hunk<'a> {
     pub fn patch(&self, options: PatchOptions) -> HunkPatch {
         HunkPatch {
             hunk: self,
-            options,
+            options
         }
     }
 }
