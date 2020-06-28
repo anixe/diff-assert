@@ -47,7 +47,7 @@ impl<'a> Default for DisplayOptions<'a> {
     fn default() -> Self {
         Self {
             offset: 1,
-            msg_fmt: Default::default()
+            msg_fmt: Default::default(),
         }
     }
 }

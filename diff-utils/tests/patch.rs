@@ -1,9 +1,10 @@
+#![cfg(feature = "patch")]
 use anyhow::Result;
-use diff_utils::{Comparison, PatchOptions};
 use chrono::{DateTime, Local};
+use diff_utils::{Comparison, PatchOptions};
+use itertools::Itertools;
 use std::borrow::Cow;
 use std::io::Write;
-use itertools::Itertools;
 
 #[test]
 fn test() -> Result<()> {
@@ -35,32 +36,22 @@ fn test() -> Result<()> {
         let snap_basename = Cow::Borrowed("test.ion.ast.new");
 
         let new = comparison.patch(
-                entry_basename,
-                &dt,
-                snap_basename,
-                &dt,
-                PatchOptions::default() // 49 in neulang
-            );
+            entry_basename,
+            &dt,
+            snap_basename,
+            &dt,
+            PatchOptions::default(), // 49 in neulang
+        );
 
-        let new = new.to_string()
-            .lines()
-            .skip(2)
-            .join("\n");
+        let new = new.to_string().lines().skip(2).join("\n");
 
-        std::fs::File::create(&new_path)
-            .and_then(|mut file| {
-                write!(file, "{}", &new)
-            })?;
+        std::fs::File::create(&new_path).and_then(|mut file| write!(file, "{}", &new))?;
 
         use std::process::Command;
         let expected_path = expected_path.display().to_string();
         let actual_path = actual_path.display().to_string();
         let diff_cmd = Command::new("diff")
-            .args(&[
-                "-u",
-                expected_path.as_str(),
-                actual_path.as_str(),
-            ])
+            .args(&["-u", expected_path.as_str(), actual_path.as_str()])
             .output()?;
 
         let patch = diff_cmd.stdout.as_slice();
@@ -70,15 +61,11 @@ fn test() -> Result<()> {
             .skip(2)
             .join("\n");
 
-        std::fs::File::create(&patch_path)
-            .and_then(|mut file| {
-                write!(file, "{}", &patch)
-            })?;
+        std::fs::File::create(&patch_path).and_then(|mut file| write!(file, "{}", &patch))?;
 
         if patch != new {
             failed = true;
-        }
-        else {
+        } else {
             std::fs::remove_file(&patch_path)?;
             std::fs::remove_file(&new_path)?;
         }

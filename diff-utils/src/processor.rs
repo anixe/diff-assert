@@ -1,7 +1,6 @@
 use crate::Hunk;
 use crate::{Context, Line};
 use std::io;
-use std::collections::VecDeque;
 
 #[derive(Debug)]
 pub struct Processor<'a> {
@@ -14,7 +13,7 @@ pub struct Processor<'a> {
 
     pub(crate) context: Context<'a>,
     pub(crate) result: Vec<Hunk<'a>>,
-    pub(crate) size: usize
+    pub(crate) size: usize,
 }
 
 impl<'a> Processor<'a> {
@@ -40,7 +39,10 @@ impl<'a> Processor<'a> {
 
 impl<'a> Processor<'a> {
     fn split_hunks(&mut self, i: impl Into<Option<usize>>) {
-        let diff = self.size.checked_sub(self.context_radius).unwrap_or_default();
+        let diff = self
+            .size
+            .checked_sub(self.context_radius)
+            .unwrap_or_default();
 
         let at = self.context.data.len() - diff;
         let mut removed = self.context.data.split_off(at);

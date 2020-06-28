@@ -66,9 +66,7 @@ pub struct PatchOptions {
 
 impl Default for PatchOptions {
     fn default() -> Self {
-        Self {
-            offset: 1
-        }
+        Self { offset: 1 }
     }
 }
 
@@ -78,7 +76,7 @@ impl<'a> Hunk<'a> {
     pub fn patch(&self, options: PatchOptions) -> HunkPatch {
         HunkPatch {
             hunk: self,
-            options
+            options,
         }
     }
 }
