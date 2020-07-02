@@ -42,7 +42,6 @@
 //! * `patch` to generate patch files
 
 mod context;
-mod diff;
 mod hunk;
 mod line;
 mod processor;

@@ -13,6 +13,7 @@ pub struct Processor<'a> {
 
     pub(crate) context: Context<'a>,
     pub(crate) result: Vec<Hunk<'a>>,
+    pub(crate) size: usize,
 }
 
 impl<'a> Processor<'a> {
@@ -24,6 +25,7 @@ impl<'a> Processor<'a> {
             context_radius,
             inserted: 0,
             removed: 0,
+            size: 0,
 
             context: Context::default(),
             result: Vec::new(),
@@ -35,11 +37,40 @@ impl<'a> Processor<'a> {
     }
 }
 
+impl<'a> Processor<'a> {
+    fn split_hunks(&mut self, i: impl Into<Option<usize>>) {
+        let diff = self
+            .size
+            .checked_sub(self.context_radius)
+            .unwrap_or_default();
+
+        let at = self.context.data.len() - diff;
+        let mut removed = self.context.data.split_off(at);
+        self.context.equaled -= diff;
+
+        if let Some(hunk) = self.context.create_hunk(self.removed, self.inserted) {
+            self.result.push(hunk);
+        }
+
+        removed.pop_front();
+
+        self.removed += self.context.removed;
+        self.inserted += self.context.inserted;
+
+        self.context = Context::default();
+        let i = i.into();
+        self.context.start = i.map(|i| i - removed.len());
+        self.context.equaled += removed.len();
+        self.size = removed.len();
+        self.context.data.extend(removed.into_iter());
+    }
+}
+
 impl<'a> diffs::Diff for Processor<'a> {
     type Error = io::Error;
 
     fn equal(&mut self, old: usize, _new: usize, len: usize) -> Result<(), Self::Error> {
-        let mut size = 0;
+        self.size = 0;
 
         if self.context.start.is_none() {
             self.context.start = Some(old);
@@ -49,10 +80,10 @@ impl<'a> diffs::Diff for Processor<'a> {
             if !self.context.changed {
                 self.context
                     .data
-                    .push_back(Line::new_line(i, j, &self.text1[i]));
-                if size < self.context_radius {
+                    .push_back(Line::unchanged(i, j, &self.text1[i]));
+                if self.size < self.context_radius {
                     self.context.equaled += 1;
-                    size += 1;
+                    self.size += 1;
                 } else {
                     self.context.data.pop_front();
                     if let Some(ref mut start) = self.context.start {
@@ -62,24 +93,26 @@ impl<'a> diffs::Diff for Processor<'a> {
             }
 
             if self.context.changed {
-                if size < self.context_radius {
+                /*
+                We want * 2 in case next hunk would be adjacent to the current one.
+                 */
+                if self.size < self.context_radius * 2 {
                     self.context
                         .data
-                        .push_back(Line::new_line(i, j, &self.text1[i]));
+                        .push_back(Line::unchanged(i, j, &self.text1[i]));
                     self.context.equaled += 1;
-                    size += 1;
+                    self.size += 1;
                 } else {
-                    if let Some(hunk) = self.context.create_hunk(self.removed, self.inserted) {
-                        self.result.push(hunk);
-                    }
+                    // But if there are more unchanged lines between two changes than context_radius * 2,
+                    // then we want to split hunk into smaller.
 
-                    self.removed += self.context.removed;
-                    self.inserted += self.context.inserted;
-                    self.context = Context::default();
+                    self.split_hunks(i);
+
                     self.context
                         .data
-                        .push_back(Line::new_line(i, j, &self.text1[i]));
-                    size = 1;
+                        .push_back(Line::unchanged(i, j, &self.text1[i]));
+                    self.size += 1;
+                    self.context.equaled += 1;
                 }
             }
         }
@@ -88,6 +121,7 @@ impl<'a> diffs::Diff for Processor<'a> {
     }
 
     fn delete(&mut self, old: usize, len: usize, _new: usize) -> Result<(), Self::Error> {
+        self.size = 0;
         if self.context.start.is_none() {
             self.context.start = Some(old);
         }
@@ -103,6 +137,7 @@ impl<'a> diffs::Diff for Processor<'a> {
     }
 
     fn insert(&mut self, old: usize, new: usize, new_len: usize) -> Result<(), Self::Error> {
+        self.size = 0;
         if self.context.start.is_none() {
             self.context.start = Some(old);
         }
@@ -124,6 +159,7 @@ impl<'a> diffs::Diff for Processor<'a> {
         new: usize,
         new_len: usize,
     ) -> Result<(), Self::Error> {
+        self.size = 0;
         if self.context.start.is_none() {
             self.context.start = Some(old);
         }
@@ -150,9 +186,7 @@ impl<'a> diffs::Diff for Processor<'a> {
     }
 
     fn finish(&mut self) -> Result<(), Self::Error> {
-        if let Some(hunk) = self.context.create_hunk(self.removed, self.inserted) {
-            self.result.push(hunk);
-        }
+        self.split_hunks(None);
 
         Ok(())
     }
