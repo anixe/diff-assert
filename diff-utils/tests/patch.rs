@@ -20,8 +20,6 @@ fn test() -> Result<()> {
         let mut patch_path = actual_path.clone();
         patch_path.set_extension("patch.tmp");
 
-        dbg!(&actual_path);
-        dbg!(&expected_path);
         let expected = std::fs::read_to_string(&expected_path)?;
         let actual = std::fs::read_to_string(&actual_path)?;
         let expected_lines = expected.lines().collect::<Vec<_>>();
@@ -32,17 +30,20 @@ fn test() -> Result<()> {
         let datetime: DateTime<Local> = dt.parse()?;
         let dt = datetime.format("%F %T %z");
 
-        let entry_basename = Cow::Borrowed("test.ion.snap");
-        let snap_basename = Cow::Borrowed("test.ion.ast.new");
+        let left_name = Cow::Borrowed("left");
+        let right_name = Cow::Borrowed("right");
 
         let new = comparison.patch(
-            entry_basename,
+            left_name,
             &dt,
-            snap_basename,
+            right_name,
             &dt,
-            PatchOptions::default(), // 49 in neulang
+            PatchOptions::default(),
         );
 
+        // We are trimming two first lines from both diff-utils comparison and from GNU diff comparison
+        // because its a filename + timestamp. The rest is constant and we care more about a diff than this
+        // metadata.
         let new = new.to_string().lines().skip(2).join("\n");
 
         std::fs::File::create(&new_path).and_then(|mut file| write!(file, "{}", &new))?;
