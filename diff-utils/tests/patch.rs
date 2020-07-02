@@ -33,13 +33,7 @@ fn test() -> Result<()> {
         let left_name = Cow::Borrowed("left");
         let right_name = Cow::Borrowed("right");
 
-        let new = comparison.patch(
-            left_name,
-            &dt,
-            right_name,
-            &dt,
-            PatchOptions::default(),
-        );
+        let new = comparison.patch(left_name, &dt, right_name, &dt, PatchOptions::default());
 
         // We are trimming two first lines from both diff-utils comparison and from GNU diff comparison
         // because its a filename + timestamp. The rest is constant and we care more about a diff than this
