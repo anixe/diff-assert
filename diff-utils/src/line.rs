@@ -43,10 +43,7 @@ impl LineKind {
     }
 
     pub(crate) fn is_replaced(self) -> bool {
-        match self {
-            LineKind::ReplaceInserted | LineKind::ReplaceRemoved => true,
-            _ => false,
-        }
+        matches!(self, LineKind::ReplaceInserted | LineKind::ReplaceRemoved)
     }
 }
 
