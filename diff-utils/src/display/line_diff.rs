@@ -15,6 +15,8 @@ mod tests {
 
     #[test]
     fn unicode_support() {
+        colored::control::set_override(false);
+
         let left = "Pośród";
         let right = "Posród"; // "s" instead of "ś".
 
