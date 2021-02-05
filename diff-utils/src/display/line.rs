@@ -40,17 +40,17 @@ impl<'a> fmt::Display for LineDisplay<'a> {
 
         match self.line.kind {
             LineKind::Inserted | LineKind::ReplaceInserted => {
-                write!(f, "{}", header.on_black().green())
+                write!(f, "{}", header.green())
             }
             LineKind::Removed | LineKind::ReplaceRemoved => {
-                write!(f, "{}", header.on_black().red())
+                write!(f, "{}", header.red())
             }
             LineKind::Unchanged => write!(f, "{}", header),
         }?;
 
         match self.line.kind {
-            LineKind::ReplaceInserted => write!(f, "{}", line.on_black().green()),
-            LineKind::ReplaceRemoved => write!(f, "{}", line.on_black().red()),
+            LineKind::ReplaceInserted => write!(f, "{}", line.green()),
+            LineKind::ReplaceRemoved => write!(f, "{}", line.red()),
             LineKind::Inserted => write!(f, "{}", line.on_green().black()),
             LineKind::Removed => write!(f, "{}", line.on_red().black()),
             LineKind::Unchanged => write!(f, "{}", line),

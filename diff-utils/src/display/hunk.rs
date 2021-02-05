@@ -39,7 +39,7 @@ impl<'a> fmt::Display for HunkDisplay<'a> {
             self.hunk.new_start + self.options.offset,
             self.hunk.inserted
         );
-        writeln!(f, "{}", header.on_blue().black().dimmed())?;
+        writeln!(f, "{}", header.black().dimmed())?;
 
         for line in self.hunk.lines.iter() {
             if let Some(inverted) = get_inverted(&line).and_then(|key| lines.get(&key)) {

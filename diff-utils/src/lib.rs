@@ -194,6 +194,8 @@ mod tests {
 | 24638 | Twin Room   | P1:3 A1:3 C0:2 FC0:9[0:3] MCA0:3[13:13] | DZ  | child_ages:["4:6","7:12"] |           |"#
     )]
     fn test_diff_hunks(left: &str, right: &str) {
+        colored::control::set_override(false);
+
         let left: Vec<&str> = left.lines().collect();
         let right: Vec<&str> = right.lines().collect();
         let result = Comparison::new(&left, &right).compare().expect("hunks");
