@@ -23,8 +23,8 @@ colored = { version = "1.9.3", optional = true }
 chrono = { version = "0.4.11", optional = true }
 
 [dev-dependencies]
-test-case = "1.0.0"
-insta = "0.16.0"
+test-case = "1.2"
+insta = "1.8"
 anyhow = "1.0.31"
 glob = "0.3.0"
 itertools = "0.9.0"
