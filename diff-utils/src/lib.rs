@@ -98,7 +98,7 @@ impl<'a> Comparison<'a> {
     /// # Errors
     /// In case of any errors in patience algorithm it may return `io::Error`.
     pub fn compare(&self) -> io::Result<CompareResult<'a>> {
-        let mut processor = Processor::new(&self.left, &self.right, self.context_radius);
+        let mut processor = Processor::new(self.left, self.right, self.context_radius);
         {
             let mut replace = diffs::Replace::new(&mut processor);
             diffs::patience::diff(

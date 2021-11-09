@@ -80,7 +80,7 @@ impl<'a> diffs::Diff for Processor<'a> {
             if !self.context.changed {
                 self.context
                     .data
-                    .push_back(Line::unchanged(i, j, &self.text1[i]));
+                    .push_back(Line::unchanged(i, j, self.text1[i]));
                 if self.size < self.context_radius {
                     self.context.equaled += 1;
                     self.size += 1;
@@ -99,7 +99,7 @@ impl<'a> diffs::Diff for Processor<'a> {
                 if self.size < self.context_radius * 2 {
                     self.context
                         .data
-                        .push_back(Line::unchanged(i, j, &self.text1[i]));
+                        .push_back(Line::unchanged(i, j, self.text1[i]));
                     self.context.equaled += 1;
                     self.size += 1;
                 } else {
@@ -110,7 +110,7 @@ impl<'a> diffs::Diff for Processor<'a> {
 
                     self.context
                         .data
-                        .push_back(Line::unchanged(i, j, &self.text1[i]));
+                        .push_back(Line::unchanged(i, j, self.text1[i]));
                     self.size += 1;
                     self.context.equaled += 1;
                 }
@@ -127,7 +127,7 @@ impl<'a> diffs::Diff for Processor<'a> {
         }
 
         for i in old..old + len {
-            self.context.data.push_back(Line::remove(i, &self.text1[i]));
+            self.context.data.push_back(Line::remove(i, self.text1[i]));
         }
 
         self.context.changed = true;
@@ -143,7 +143,7 @@ impl<'a> diffs::Diff for Processor<'a> {
         }
 
         for i in new..new + new_len {
-            self.context.data.push_back(Line::insert(i, &self.text2[i]));
+            self.context.data.push_back(Line::insert(i, self.text2[i]));
         }
 
         self.context.changed = true;
@@ -168,14 +168,14 @@ impl<'a> diffs::Diff for Processor<'a> {
             let j = if j < (new + new_len) { Some(j) } else { None };
             self.context
                 .data
-                .push_back(Line::replace_remove(i, j, &self.text1[i]));
+                .push_back(Line::replace_remove(i, j, self.text1[i]));
         }
 
         for (j, i) in (new..new + new_len).zip(old..old + new_len) {
             let i = if i < (old + old_len) { Some(i) } else { None };
             self.context
                 .data
-                .push_back(Line::replace_insert(i, j, &self.text2[j]));
+                .push_back(Line::replace_insert(i, j, self.text2[j]));
         }
 
         self.context.changed = true;

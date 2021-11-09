@@ -42,7 +42,7 @@ impl<'a> fmt::Display for HunkDisplay<'a> {
         writeln!(f, "{}", header.black().dimmed())?;
 
         for line in self.hunk.lines.iter() {
-            if let Some(inverted) = get_inverted(&line).and_then(|key| lines.get(&key)) {
+            if let Some(inverted) = get_inverted(line).and_then(|key| lines.get(&key)) {
                 LineDiff {
                     left: inverted,
                     right: line,
