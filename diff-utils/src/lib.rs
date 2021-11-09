@@ -98,7 +98,7 @@ impl<'a> Comparison<'a> {
     /// # Errors
     /// In case of any errors in patience algorithm it may return `io::Error`.
     pub fn compare(&self) -> io::Result<CompareResult<'a>> {
-        let mut processor = Processor::new(&self.left, &self.right, self.context_radius);
+        let mut processor = Processor::new(self.left, self.right, self.context_radius);
         {
             let mut replace = diffs::Replace::new(&mut processor);
             diffs::patience::diff(
@@ -183,76 +183,136 @@ pub fn diff(
 mod tests {
     use super::*;
     use itertools::Itertools;
-    use test_case::test_case;
 
-    #[test_case("A B C\nD E F", "A B D\nE F G")]
-    #[test_case("A B C\nD E F", "A B D\nE F G\n1 2 3")]
-    #[test_case(
-    r#"|-------|-------------|-----------------------------------------|-----|---------------------------------|-----------|
+    struct TestCase {
+        a: &'static str,
+        b: &'static str,
+    }
+
+    mod diff_hunks {
+        use super::*;
+        use test_case::test_case;
+
+        const TEST_1: TestCase = TestCase {
+            a: "A B C\nD E F",
+            b: "A B D\nE F G",
+        };
+
+        const TEST_2: TestCase = TestCase {
+            a: "A B C\nD E F",
+            b: "A B D\nE F G\n1 2 3",
+        };
+
+        const TEST_3: TestCase = TestCase {
+            a: r#"|-------|-------------|-----------------------------------------|-----|---------------------------------|-----------|
 | 24638 | Twin Room   | P1:3 A1:3 C0:2 FC0:9[0:1] MCA0:3[13:13] | DZ  | child_ages:["2:3","4:6","7:12"] |           |"#,
-    r#"|-------|-------------|-----------------------------------------|-----|---------------------------|-----------|
-| 24638 | Twin Room   | P1:3 A1:3 C0:2 FC0:9[0:3] MCA0:3[13:13] | DZ  | child_ages:["4:6","7:12"] |           |"#
-    )]
-    fn test_diff_hunks(left: &str, right: &str) {
-        colored::control::set_override(false);
+            b: r#"|-------|-------------|-----------------------------------------|-----|---------------------------|-----------|
+| 24638 | Twin Room   | P1:3 A1:3 C0:2 FC0:9[0:3] MCA0:3[13:13] | DZ  | child_ages:["4:6","7:12"] |           |"#,
+        };
 
-        let left: Vec<&str> = left.lines().collect();
-        let right: Vec<&str> = right.lines().collect();
-        let result = Comparison::new(&left, &right).compare().expect("hunks");
+        #[test_case(TEST_1)]
+        #[test_case(TEST_2)]
+        #[test_case(TEST_3)]
+        fn test(TestCase { a, b }: TestCase) {
+            colored::control::set_override(false);
 
-        if !result.is_empty() {
-            let hunks = result
-                .hunks
-                .iter()
-                .map(|s| format!("{}\n", s.display(Default::default())))
-                .join("\n");
-            insta::assert_display_snapshot!(hunks);
+            let left: Vec<&str> = a.lines().collect();
+            let right: Vec<&str> = b.lines().collect();
+            let result = Comparison::new(&left, &right).compare().expect("hunks");
+
+            if !result.is_empty() {
+                let hunks = result
+                    .hunks
+                    .iter()
+                    .map(|s| format!("{}\n", s.display(Default::default())))
+                    .join("\n");
+
+                insta::assert_display_snapshot!(hunks);
+            }
         }
     }
 
-    #[test_case(
-    "\n\u{1b}[1;4mLorem ipsum\u{1b}[0m\n\n\nExcepteur sint occaecat cupidatat non proident\n\n\u{1b}[7m1\u{1b}[0m\n",
-    "\n\u{1b}[1;4mLorem ipsum\u{1b}[0m\n\n\nExcepteur sint occaecat cupidatat non proident\n\n\u{1b}[7m2\u{1b}[0m\n"
-    )]
-    #[test_case(
-        "\nLorem ipsum\n\n\nExcepteur sint occaecat cupidatat non proident\n\n1\n",
-        "\nLorem ipsum\n\n\nExcepteur sint occaecat cupidatat non proident\n\n2\n"
-    )]
-    #[test_case("\nL\n\n\nE\n\n1\n", "\nL\n\n\nE\n\n2\n")]
-    #[test_case("\n\n\n\n\n\n1", "\n\n\n\n\n\n2")]
-    fn overflow_test(a: &str, b: &str) {
-        let left: Vec<&str> = a.lines().collect();
-        let right: Vec<&str> = b.lines().collect();
-        let hunks = Comparison::new(&left, &right).compare().expect("hunks");
-        dbg!(&hunks);
+    mod overflow {
+        use super::*;
+        use test_case::test_case;
+
+        const TEST_1: TestCase = TestCase {
+            a:    "\n\u{1b}[1;4mLorem ipsum\u{1b}[0m\n\n\nExcepteur sint occaecat cupidatat non proident\n\n\u{1b}[7m1\u{1b}[0m\n",
+            b:    "\n\u{1b}[1;4mLorem ipsum\u{1b}[0m\n\n\nExcepteur sint occaecat cupidatat non proident\n\n\u{1b}[7m2\u{1b}[0m\n",
+        };
+
+        const TEST_2: TestCase = TestCase {
+            a: "\nLorem ipsum\n\n\nExcepteur sint occaecat cupidatat non proident\n\n1\n",
+            b: "\nLorem ipsum\n\n\nExcepteur sint occaecat cupidatat non proident\n\n2\n",
+        };
+
+        const TEST_3: TestCase = TestCase {
+            a: "\nL\n\n\nE\n\n1\n",
+            b: "\nL\n\n\nE\n\n2\n",
+        };
+
+        const TEST_4: TestCase = TestCase {
+            a: "\n\n\n\n\n\n1",
+            b: "\n\n\n\n\n\n2",
+        };
+
+        #[test_case(TEST_1)]
+        #[test_case(TEST_2)]
+        #[test_case(TEST_3)]
+        #[test_case(TEST_4)]
+        fn test(TestCase { a, b }: TestCase) {
+            let left: Vec<&str> = a.lines().collect();
+            let right: Vec<&str> = b.lines().collect();
+            let hunks = Comparison::new(&left, &right).compare().expect("hunks");
+            dbg!(&hunks);
+        }
     }
 
-    #[test_case(
-        "\nLorem \n\n\nipsum\n1\n2\n3\n4\n",
-        "\nLorem \n\n\nipsun\n1\n2\n3\n4\n"
-    )]
-    #[test_case("\nLorem \n\n\nipsum\n1\n2\n3\n", "\nLorem \n\n\nipsun\n1\n2\n3\n")]
-    #[test_case("\nLorem \n\n\nipsum\n1\n", "\nLorem \n\n\nipsun\n1\n")]
-    #[test_case(
-    concat!(
-    "1\n2\n3\n4\n", // unchanged
-    "foo\n", // changed
-    "1\n2\n3\n4\n", // unchanged
-    "bar\n", // changed
-    "1\n2\n3\n4\n", // unchanged
-    ),
-    concat!(
-    "1\n2\n3\n4\n", // unchanged
-    "fou\n", // changed
-    "1\n2\n3\n4\n", // unchanged
-    "baz\n", // changed
-    "1\n2\n3\n4\n", // unchanged
-    )
-    )]
-    fn bad_diff_test(a: &str, b: &str) {
-        let left: Vec<&str> = a.lines().collect();
-        let right: Vec<&str> = b.lines().collect();
-        let hunks = Comparison::new(&left, &right).compare().expect("hunks");
-        insta::assert_debug_snapshot!(hunks);
+    mod bad_diff {
+        use super::*;
+        use test_case::test_case;
+
+        const TEST_1: TestCase = TestCase {
+            a: "\nLorem \n\n\nipsum\n1\n2\n3\n4\n",
+            b: "\nLorem \n\n\nipsun\n1\n2\n3\n4\n",
+        };
+
+        const TEST_2: TestCase = TestCase {
+            a: "\nLorem \n\n\nipsum\n1\n2\n3\n",
+            b: "\nLorem \n\n\nipsun\n1\n2\n3\n",
+        };
+
+        const TEST_3: TestCase = TestCase {
+            a: "\nLorem \n\n\nipsum\n1\n",
+            b: "\nLorem \n\n\nipsun\n1\n",
+        };
+
+        const TEST_4: TestCase = TestCase {
+            a: concat!(
+                "1\n2\n3\n4\n", // unchanged
+                "foo\n",        // changed
+                "1\n2\n3\n4\n", // unchanged
+                "bar\n",        // changed
+                "1\n2\n3\n4\n", // unchanged
+            ),
+            b: concat!(
+                "1\n2\n3\n4\n", // unchanged
+                "fou\n",        // changed
+                "1\n2\n3\n4\n", // unchanged
+                "baz\n",        // changed
+                "1\n2\n3\n4\n", // unchanged
+            ),
+        };
+
+        #[test_case(TEST_1)]
+        #[test_case(TEST_2)]
+        #[test_case(TEST_3)]
+        #[test_case(TEST_4)]
+        fn test(TestCase { a, b }: TestCase) {
+            let left: Vec<&str> = a.lines().collect();
+            let right: Vec<&str> = b.lines().collect();
+            let hunks = Comparison::new(&left, &right).compare().expect("hunks");
+            insta::assert_debug_snapshot!(hunks);
+        }
     }
 }
