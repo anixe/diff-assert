@@ -17,3 +17,9 @@ members = ["diff-utils"]
 
 [dependencies]
 diff_utils = { path = "./diff-utils", features = ["display"] }
+walkdir = { version = "2", optional = true }
+
+[features]
+# enables/disables dir assert_diff_dir
+dir_assert = ["walkdir"]
+default = ["dir_assert"]
